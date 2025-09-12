@@ -23,7 +23,7 @@ export default function HeroSection({ heroImages, currentImageIndex }: HeroSecti
         >
           <img
             src={image}
-            alt="West Bengal Heritage"
+            alt="Jharkhand Heritage"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -40,12 +40,11 @@ export default function HeroSection({ heroImages, currentImageIndex }: HeroSecti
           <h1 className="text-6xl md:text-8xl font-extrabold font-display mb-6 leading-tight shadow-text">
             Discover
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-400 to-indigo-300">
-              West Bengal
+             Jharkhand
             </span>
           </h1>
           <p className="text-lg md:text-xl mb-10 opacity-95 max-w-3xl mx-auto leading-relaxed">
-            Journey through centuries of rich heritage, vibrant festivals, magnificent temples,
-            and the warmth of Bengali culture.
+            Journey through the land of sacred temples, lush forests, ancient heritage, vibrant festivals, and the warmth of Jharkhand’s tribal culture.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
