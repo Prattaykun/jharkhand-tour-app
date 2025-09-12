@@ -24,11 +24,11 @@ export default function Footer() {
                 <img src="/media/flight.png" alt="WB Tour Logo" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h3 className="text-3xl font-black">WB Tour</h3>
-                <p className="text-teal-300 text-sm font-medium">Explore Bengal</p>
+                <h3 className="text-3xl font-black">JH Tour</h3>
+                <p className="text-teal-300 text-sm font-medium">Explore Jharkhand</p>
               </div>
             </button>
-            <p className="text-gray-300">Discover the beauty and heritage of West Bengal with local insights.</p>
+            <p className="text-gray-300">Discover the beauty and heritage of Jharkhand with local insights.</p>
           </div>
 
           {/* Contact Section */}
@@ -41,7 +41,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center justify-center gap-3 hover:text-teal-300 transition">
                 <Mail className="w-5 h-5" />
-                <span>wbtour@travel.co.pvt</span>
+                <span>JHtour@travel.co.pvt</span>
               </div>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/20 pt-8 text-center">
-          <p>© {new Date().getFullYear()} WB Tour | DGPRC.pvt</p>
+          <p>© {new Date().getFullYear()} JH Tour | DGPRC.pvt</p>
         </div>
       </div>
     </footer>

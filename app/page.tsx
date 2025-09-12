@@ -33,9 +33,9 @@ export default function Home() {
   const router = useRouter();
 
   const heroImages = [
-    "/media/m.webp",
-    "/media/kolkata.jpg",
-    "/media/pexels-aditya-chowdhury-1907990508-28938866.jpg",
+    "/media/icons/1.jpg",
+    "/media/icons/jharkhand-new.jpg",
+    "/media/icons/2.jpeg",
   ];
 
   useEffect(() => {

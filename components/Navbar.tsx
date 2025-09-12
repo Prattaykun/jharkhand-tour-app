@@ -30,9 +30,9 @@ export default function Navbar() {
         </div>
         <div>
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
-            WB Tour
+            JH Tour
           </h1>
-          <p className="text-sm text-gray-200 font-medium">Explore Bengal</p>
+          <p className="text-sm text-gray-200 font-medium">Explore Jharkhand</p>
         </div>
       </button>
 
@@ -41,8 +41,8 @@ export default function Navbar() {
         <button onClick={() => router.push("/Culture")} className={pathname === "/#Culture&Events" ? "text-indigo-400" : "hover:text-indigo-400"}>
           Culture&Events
         </button>
-        <button onClick={() =>router.push("/Stores")} className={pathname === "/#Stores" ? "text-indigo-400" : "hover:text-indigo-400"}>
-          Stores
+        <button onClick={() =>router.push("/auth/login")} className={pathname === "/#Stores" ? "text-indigo-400" : "hover:text-indigo-400"}>
+          Login
         </button>
         <button onClick={() => go("contact")} className={pathname === "/#contact" ? "text-indigo-400" : "hover:text-indigo-400"}>
           Contact
@@ -64,11 +64,11 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-white/20 backdrop-blur-lg shadow-xl border-t border-white/20 md:hidden">
           <div className="flex flex-col space-y-4 p-6">
-            <button onClick={() => go("destinations")} className="py-3 px-4 rounded-xl hover:bg-indigo-50/50 hover:text-indigo-400">Destinations</button>
-            <button onClick={() => go("how-it-works")} className="py-3 px-4 rounded-xl hover:bg-indigo-50/50 hover:text-indigo-400">How It Works</button>
+            <button onClick={() => go("destinations")} className="py-3 px-4 rounded-xl hover:bg-indigo-50/50 hover:text-indigo-400">Culture&Events</button>
+            <button onClick={() => go("how-it-works")} className="py-3 px-4 rounded-xl hover:bg-indigo-50/50 hover:text-indigo-400">Login</button>
             <button onClick={() => go("contact")} className="py-3 px-4 rounded-xl hover:bg-indigo-50/50 hover:text-indigo-400">Contact</button>
-            <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white py-4 rounded-xl" onClick={() => router.push("/tourselect")}>
-              Book Now <ArrowRight className="w-4 h-4 ml-2" />
+            <Button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white py-4 rounded-xl" onClick={() => router.push("/map")}>
+              Explore<ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </div>

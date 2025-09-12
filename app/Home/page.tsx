@@ -20,10 +20,11 @@ export default function Home() {
   const router = useRouter();
 
   const heroImages = [
-    "/media/m.webp",
-    "/media/kolkata.jpg",
-    "/media/pexels-aditya-chowdhury-1907990508-28938866.jpg",
-  ];
+  "/media/1.jpg",
+  "/media/jharkhand-new.jpg",
+  "/media/2.jpeg",
+];
+
 
   useEffect(() => {
     const interval = setInterval(() => {
