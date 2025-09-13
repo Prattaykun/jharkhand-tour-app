@@ -155,29 +155,31 @@ export default function Home() {
 
       <TestimonialSection />
 
-      {/* Floating Action Button & Chatbot */}
-      <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end">
-        {!showChatbot ? (
-          <button
-            className="w-14 h-14 bg-gradient-to-r from-green-600 to-blue-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:shadow-3xl transition-all duration-300 animate-bounce"
-            onClick={() => setShowChatbot(true)}
-          >
-            <SearchIcon className="w-6 h-6" />
-          </button>
-        ) : (
-          <>
-            <div className="mb-2">
-              <Chatbot />
-            </div>
-            <button
-              className="w-10 h-10 bg-gradient-to-r from-green-600 to-blue-600 rounded-full shadow-xl flex items-center justify-center text-white hover:shadow-2xl transition-all duration-300 animate-spin mr-12"
-              onClick={() => setShowChatbot(false)}
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </>
-        )}
+     {/* Floating Action Button & Chatbot */}
+<div className="fixed bottom-24 right-6 z-40 flex flex-col items-end">
+  {!showChatbot ? (
+    <button
+      className="w-14 h-14 bg-gradient-to-r from-green-600 to-blue-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:shadow-3xl transition-all duration-300"
+      onClick={() => setShowChatbot(true)}
+    >
+      <SearchIcon className="w-6 h-6" />
+    </button>
+  ) : (
+    <>
+      <div className="mb-2">
+        <Chatbot />
       </div>
+      <button
+  className="w-10 h-10 bg-gradient-to-r from-green-600 to-blue-600 rounded-full shadow-xl flex items-center justify-center text-white hover:shadow-2xl transition-all duration-300 mr-12"
+  onClick={() => setShowChatbot(false)}
+>
+  <X className="w-5 h-5" />
+</button>
+
+    </>
+  )}
+</div>
+
     </>
   );
 }
