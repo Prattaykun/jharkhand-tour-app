@@ -92,48 +92,66 @@ export default function Home() {
           </h2>
 
           <Search 
-            placeholder="Discover places, hotels, events and more..."
+            placeholder="🔍Discover places, hotels, events and more..."
             onResultSelect={handleSearchResultSelect}
-            className="max-w-2xl mx-auto my-8"
+            className="max-w-2xl mx-auto my-8 text-black"
           />
         </div>
       </section>
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mb-4">
-                  <stat.icon className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+         <div className="grid grid-cols-4 gap-10">
+  {stats.map((stat) => (
+    <div
+      key={stat.label}
+      className="text-center p-6 rounded-3xl shadow-xl bg-white border border-gray-100"
+    >
+      <div className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-gradient-to-br from-indigo-500 to-purple-500 shadow-md">
+        <stat.icon className="w-10 h-10 text-white" />
+      </div>
+      <div className="text-4xl font-bold text-gray-900 mb-1">{stat.value}</div>
+      <div className="text-gray-700 font-medium tracking-wide">{stat.label}</div>
+    </div>
+  ))}
+</div>
+
         </div>
       </section>
 
       <FeaturedDestinations />
       <CulturalHighlights />
 
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="text-white">
-            <h2 className="text-4xl font-bold mb-6">Ready to Explore West Bengal?</h2>
-            <p className="text-xl mb-8 opacity-90">Discover centuries of rich heritage, vibrant culture, and unforgettable experiences</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/MyTourPlan" className="bg-white text-indigo-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 inline-flex items-center justify-center">
-                Plan Your Trip <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-              <Link href="/Heritage" className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all transform hover:scale-105 inline-flex items-center justify-center">
-                Explore Heritage Sites <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+     <section className="py-20 bg-gradient-to-r from-green-100 to-emerald-200 relative overflow-hidden">
+  {/* Subtle tribal pattern overlay */}
+  <div className="absolute inset-0 opacity-10 bg-[url('https://pbs.twimg.com/media/ET77GGKVAAEZJxu?format=jpg&name=4096x4096')] bg-repeat"></div>
+
+  <div className="relative max-w-4xl mx-auto px-4 text-center">
+    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-green-900 tracking-tight">
+      Ready to Explore Jharkhand?
+    </h2>
+    <p className="text-lg md:text-xl mb-10 text-green-800 leading-relaxed">
+      Journey through sacred forests, tribal traditions, and timeless heritage that define Jharkhand.
+    </p>
+
+    <div className="flex flex-col sm:flex-row gap-5 justify-center">
+      <Link
+        href="/MyTourPlan"
+        className="px-8 py-4 rounded-full font-semibold bg-green-600 text-white shadow-md hover:bg-green-700 transition-all transform hover:scale-105 inline-flex items-center justify-center"
+      >
+        Plan Your Journey <ArrowRight className="w-5 h-5 ml-2" />
+      </Link>
+
+      <Link
+        href="/Heritage"
+        className="px-8 py-4 rounded-full font-semibold border-2 border-green-700 text-green-700 hover:bg-green-700 hover:text-white transition-all transform hover:scale-105 inline-flex items-center justify-center"
+      >
+        Explore Heritage Sites <ArrowRight className="w-5 h-5 ml-2" />
+      </Link>
+    </div>
+  </div>
+</section>
+
 
       <TestimonialSection />
 

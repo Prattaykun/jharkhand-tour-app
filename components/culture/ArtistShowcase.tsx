@@ -5,58 +5,58 @@ import { Award, Music, Palette, Theater } from "lucide-react";
 export default function ArtistShowcase() {
   const artists = [
     {
-      name: "Rabindranath Tagore",
-      category: "Literature & Music",
-      achievement: "Nobel Prize Winner 1913",
+      name: "Ram Dayal Munda",
+      category: "Tribal Music & Literature",
+      achievement: "Padma Shri Recipient",
       icon: Music,
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/2/27/Ram_Dayal_Munda.jpg",
       description:
-        "Poet, musician, and artist who reshaped Bengali literature and music",
+        "Renowned tribal scholar and musician who promoted Santhali language and folk music.",
     },
     {
-      name: "Satyajit Ray",
-      category: "Cinema",
-      achievement: "Academy Award Winner",
+      name: "Jharkhandi Folk Dancers",
+      category: "Performing Arts",
+      achievement: "Preserving Tribal Traditions",
       icon: Theater,
       image:
-        "https://images.unsplash.com/photo-1503095396549-807759245b35?w=300&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f2/Santhali_dance.jpg",
       description:
-        "Legendary filmmaker who brought Bengali cinema to world stage",
+        "Folk dancers from Munda, Santhal, and Oraon communities showcasing traditional tribal dances like Chhau and Paika.",
     },
     {
-      name: "Jamini Roy",
+      name: "Sukumar Mahato",
       category: "Visual Arts",
-      achievement: "Padma Bhushan Recipient",
+      achievement: "Award-winning Tribal Artist",
       icon: Palette,
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Jharkhand_folk_art.jpg",
       description:
-        "Pioneering artist who modernized Indian folk art traditions",
+        "Folk and mural artist known for depicting Jharkhand’s tribal life and cultural motifs.",
     },
     {
-      name: "Ustad Allauddin Khan",
+      name: "Pandit Rajendra Prasad Singh",
       category: "Classical Music",
-      achievement: "Sangeet Natak Akademi Award",
+      achievement: "Sangeet Natak Akademi Recognition",
       icon: Music,
       image:
-        "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/1/18/Indian_classical_musician.jpg",
       description:
-        "Legendary classical musician and teacher of renowned artists",
+        "Classical musician from Jharkhand integrating local folk melodies into classical compositions.",
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-[#F0FFF0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <div className="text-center mb-16 transition-all duration-700 ease-in-out">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Legendary <span className="text-purple-600">Artists</span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#2F4F2F] mb-6">
+            Legendary <span className="text-[#3CB371]">Artists of Jharkhand</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Celebrate the extraordinary artists who have shaped Bengali culture
-            and gained international recognition
+          <p className="text-xl text-[#556B2F] max-w-3xl mx-auto">
+            Explore the lives and works of iconic Jharkhandi artists, tribal musicians,
+            dancers, and painters who have preserved and enriched the state's culture.
           </p>
         </div>
 
@@ -65,38 +65,38 @@ export default function ArtistShowcase() {
           {artists.map((artist) => (
             <div
               key={artist.name}
-              className="group bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+              className="group bg-[#E6FFE6] rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               {/* Image + Icon */}
               <div className="relative mb-6">
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-gray-200">
+                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-[#3CB371]">
                   <img
                     src={artist.image}
                     alt={artist.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#3CB371] rounded-full flex items-center justify-center">
                   <artist.icon className="w-4 h-4 text-white" />
                 </div>
               </div>
 
               {/* Info */}
               <div className="text-center">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-[#2F4F2F] mb-2">
                   {artist.name}
                 </h3>
 
-                <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
+                <div className="bg-[#C1FFC1] text-[#2E8B57] px-3 py-1 rounded-full text-sm font-medium mb-3">
                   {artist.category}
                 </div>
 
-                <div className="flex items-center justify-center text-yellow-600 text-sm font-semibold mb-3">
+                <div className="flex items-center justify-center text-[#66CDAA] text-sm font-semibold mb-3">
                   <Award className="w-4 h-4 mr-1" />
                   {artist.achievement}
                 </div>
 
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-[#556B2F] text-sm leading-relaxed">
                   {artist.description}
                 </p>
               </div>

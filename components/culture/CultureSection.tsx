@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Music, Theater, Palette, Crown } from "lucide-react";
 
 type Aspect = {
   id: number | string;
@@ -61,7 +61,7 @@ export default function CultureSection({ aspect, isReverse }: CultureSectionProp
 
         <button
           onClick={() => setShowDetails(!showDetails)}
-          className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:from-purple-700 hover:to-blue-700 transition-all"
+          className="bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-full font-semibold hover:from-green-600 hover:to-green-800 transition-all"
         >
           {showDetails ? "Show Less" : "Learn More"}
         </button>
@@ -77,9 +77,9 @@ export default function CultureSection({ aspect, isReverse }: CultureSectionProp
               More About {aspect.title}
             </h4>
             <p className="text-gray-600 text-sm leading-relaxed">
-              This section gives deeper insights into <strong>{aspect.title}</strong>.
-              It explores the historical background, influence on society, and its
-              contribution to shaping the cultural identity of Bengal over centuries.
+              This section explores the rich cultural heritage of Jharkhand. It
+              highlights the tribal traditions, local festivals, folk music, and arts
+              that have shaped the social and cultural identity of the state over centuries.
             </p>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function CultureSection({ aspect, isReverse }: CultureSectionProp
       {/* Image */}
       <div className={`${isReverse ? "md:col-start-1" : ""}`}>
         <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-3xl transform rotate-3 group-hover:rotate-6 transition-transform duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-green-600/20 rounded-3xl transform rotate-3 group-hover:rotate-6 transition-transform duration-300" />
           <Image
             src={aspect.image}
             alt={aspect.title}

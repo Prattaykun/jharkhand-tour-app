@@ -7,33 +7,33 @@ import { Star, Quote } from "lucide-react";
 export default function TestimonialSection() {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      location: "London, UK",
+      name: "Amit Sharma",
+      location: "New Delhi, India",
       rating: 5,
-      text: "West Bengal exceeded all my expectations! The heritage sites are breathtaking, and the warmth of Bengali culture is unforgettable.",
+      text: "Jharkhand’s natural beauty is beyond words! The waterfalls and forests made my trip a peaceful escape from city life.",
       image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&q=80",
+        "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&q=80",
     },
     {
-      name: "David Chen",
-      location: "Singapore",
+      name: "Emily Carter",
+      location: "New York, USA",
       rating: 5,
-      text: "From the majestic Victoria Memorial to the spiritual experience at Dakshineswar, every moment was magical. The food was incredible too!",
+      text: "Visiting Ranchi and Netarhat was magical! The hills, fresh air, and tribal culture gave me a once-in-a-lifetime experience.",
       image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80",
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&q=80",
     },
     {
-      name: "Maria Rodriguez",
-      location: "Madrid, Spain",
+      name: "Ravi Patel",
+      location: "Ahmedabad, India",
       rating: 5,
-      text: "The cultural richness of West Bengal is unparalleled. The festivals, art, and music create an atmosphere you won&apos;t find anywhere else.",
+      text: "I loved the vibrant culture of Jharkhand. The tribal art, local cuisine, and serene lakes truly reflect the state’s charm.",
       image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80",
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80",
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-orange-50 to-amber-50">
+    <section className="py-20 bg-gradient-to-b from-green-50 to-emerald-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <motion.div
@@ -42,11 +42,11 @@ export default function TestimonialSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            What <span className="text-orange-600">Visitors Say</span>
+            What <span className="text-green-600">Visitors Say</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Hear from travelers who have experienced the magic of West
-            Bengal&apos;s heritage and culture
+            Hear from travelers who have experienced the beauty, culture, and
+            natural wonders of Jharkhand
           </p>
         </motion.div>
 
@@ -72,7 +72,7 @@ export default function TestimonialSection() {
 
               {/* Quote */}
               <div className="relative mb-6">
-                <Quote className="absolute -top-2 -left-2 w-8 h-8 text-orange-200" />
+                <Quote className="absolute -top-2 -left-2 w-8 h-8 text-green-200" />
                 <p className="text-gray-700 leading-relaxed pl-6">
                   &quot;{testimonial.text}&quot;
                 </p>
