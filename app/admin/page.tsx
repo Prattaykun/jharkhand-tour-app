@@ -24,10 +24,11 @@ export default function AdminPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.replace("/auth/login");
+        router.replace("/auth/login"); // 🚪 Not logged in → redirect
         return;
       }
 
+      // 👇 Fetch user role from profiles (adjust table/column if needed)
       const { data: profile, error } = await supabase
         .from("profiles")
         .select("role")
@@ -35,7 +36,7 @@ export default function AdminPage() {
         .single();
 
       if (error || !profile || profile.role !== "admin") {
-        router.replace("/login");
+        router.replace("/login"); // 🚪 Not admin → redirect
         return;
       }
 
@@ -141,7 +142,6 @@ function PlacesAdmin() {
     description: "",
   });
   const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
-  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPlaces();
@@ -153,53 +153,33 @@ function PlacesAdmin() {
   }
 
   async function addPlace() {
-    setUploadStatus("Uploading...");
-    try {
-      const imageUrls = await uploadImages(imageFiles);
-      const response = await fetch("/api/embed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    const imageUrls = await uploadImages(imageFiles);
+    await fetch("/api/embed", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "places",
+        data: {
+          ...newPlace,
+          lat: +newPlace.lat,
+          lon: +newPlace.lon,
+          images: imageUrls,
         },
-        body: JSON.stringify({
-          type: "places",
-          data: {
-            ...newPlace,
-            lat: +newPlace.lat,
-            lon: +newPlace.lon,
-            images: imageUrls,
-          },
-        }),
-      });
-
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to add place");
-      }
-      
-      setUploadStatus("Place added successfully!");
-      setNewPlace({
-        name: "",
-        category: "",
-        lat: "",
-        lon: "",
-        city: "",
-        google_map_link: "",
-        entry_fee_inr: "",
-        hours: "",
-        tips: [""],
-        description: "",
-      });
-      setImageFiles([]);
-      fetchPlaces();
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => setUploadStatus(null), 3000);
-    } catch (error: any) {
-      console.error("Error adding place:", error);
-      setUploadStatus(`Error: ${error.message}`);
-    }
+      }),
+    });
+    setNewPlace({
+      name: "",
+      category: "",
+      lat: "",
+      lon: "",
+      city: "",
+      google_map_link: "",
+      entry_fee_inr: "",
+      hours: "",
+      tips: [""],
+      description: "",
+    });
+    setImageFiles([]);
+    fetchPlaces();
   }
 
   function handleImageChange(index: number, file: File | null) {
@@ -218,11 +198,11 @@ function PlacesAdmin() {
       title="🏛 Manage Places"
       items={places}
       fields={[
-        { placeholder: "Name", key: "name", required: true },
-        { placeholder: "Category", key: "category", required: true },
-        { placeholder: "Latitude", key: "lat", required: true },
-        { placeholder: "Longitude", key: "lon", required: true },
-        { placeholder: "City", key: "city", required: true },
+        { placeholder: "Name", key: "name" },
+        { placeholder: "Category", key: "category" },
+        { placeholder: "Latitude", key: "lat" },
+        { placeholder: "Longitude", key: "lon" },
+        { placeholder: "City", key: "city" },
         { placeholder: "Google Map Link", key: "google_map_link" },
         { placeholder: "Entry Fee (INR or Free)", key: "entry_fee_inr" },
         { placeholder: "Hours", key: "hours" },
@@ -236,7 +216,6 @@ function PlacesAdmin() {
       handleImageChange={handleImageChange}
       addItem={addPlace}
       deleteItem={deletePlace}
-      uploadStatus={uploadStatus}
     />
   );
 }
@@ -250,12 +229,10 @@ function HotelsAdmin() {
     lon: "",
     city: "",
     rating: "",
-    price_band: "Budget", // Changed from priceBand to price_band
+    priceBand: "Budget",
     google_map_link: "",
-    description: "", // Added description field
   });
   const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
-  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetchHotels();
@@ -267,59 +244,31 @@ function HotelsAdmin() {
   }
 
   async function addHotel() {
-    setUploadStatus("Uploading...");
-    
-    // Validate required fields
-    if (!newHotel.name || !newHotel.lat || !newHotel.lon || !newHotel.city) {
-      setUploadStatus("Error: Please fill in all required fields");
-      return;
-    }
-
-    try {
-      const imageUrls = await uploadImages(imageFiles);
-      const response = await fetch("/api/embed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    const imageUrls = await uploadImages(imageFiles);
+    await fetch("/api/embed", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "hotels",
+        data: {
+          ...newHotel,
+          lat: +newHotel.lat,
+          lon: +newHotel.lon,
+          rating: +newHotel.rating,
+          images: imageUrls,
         },
-        body: JSON.stringify({
-          type: "hotels",
-          data: {
-            ...newHotel,
-            lat: parseFloat(newHotel.lat),
-            lon: parseFloat(newHotel.lon),
-            rating: newHotel.rating ? parseFloat(newHotel.rating) : null,
-            images: imageUrls,
-          },
-        }),
-      });
-
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to add hotel");
-      }
-      
-      setUploadStatus("Hotel added successfully!");
-      setNewHotel({
-        name: "",
-        lat: "",
-        lon: "",
-        city: "",
-        rating: "",
-        price_band: "Budget",
-        google_map_link: "",
-        description: "",
-      });
-      setImageFiles([]);
-      fetchHotels();
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => setUploadStatus(null), 3000);
-    } catch (error: any) {
-      console.error("Error adding hotel:", error);
-      setUploadStatus(`Error: ${error.message}`);
-    }
+      }),
+    });
+    setNewHotel({
+      name: "",
+      lat: "",
+      lon: "",
+      city: "",
+      rating: "",
+      priceBand: "Budget",
+      google_map_link: "",
+    });
+    setImageFiles([]);
+    fetchHotels();
   }
 
   function handleImageChange(index: number, file: File | null) {
@@ -338,18 +287,17 @@ function HotelsAdmin() {
       title="🏨 Manage Hotels"
       items={hotels}
       fields={[
-        { placeholder: "Name", key: "name", required: true },
-        { placeholder: "Latitude", key: "lat", required: true },
-        { placeholder: "Longitude", key: "lon", required: true },
-        { placeholder: "City", key: "city", required: true },
-        { placeholder: "Rating (0-5)", key: "rating" },
+        { placeholder: "Name", key: "name" },
+        { placeholder: "Latitude", key: "lat" },
+        { placeholder: "Longitude", key: "lon" },
+        { placeholder: "City", key: "city" },
+        { placeholder: "Rating", key: "rating" },
         { placeholder: "Google Map Link", key: "google_map_link" },
       ]}
       selectField={{
-        key: "price_band", // Changed from priceBand to price_band
+        key: "priceBand",
         options: ["Budget", "Mid", "Premium"],
       }}
-      descriptionKey="description"
       newItem={newHotel}
       setNewItem={setNewHotel}
       imageFiles={imageFiles}
@@ -357,7 +305,6 @@ function HotelsAdmin() {
       handleImageChange={handleImageChange}
       addItem={addHotel}
       deleteItem={deleteHotel}
-      uploadStatus={uploadStatus}
     />
   );
 }
@@ -375,7 +322,6 @@ function EventsAdmin() {
     description: "",
   });
   const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
-  const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetchEvents();
@@ -387,52 +333,32 @@ function EventsAdmin() {
   }
 
   async function addEvent() {
-    setUploadStatus("Uploading...");
-    try {
-      const id = crypto.randomUUID();
-      const imageUrls = await uploadImages(imageFiles);
-      const created_at = new Date().toISOString();
-      const response = await fetch("/api/embed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    const id = crypto.randomUUID();
+    const imageUrls = await uploadImages(imageFiles);
+    const created_at = new Date().toISOString();
+    await fetch("/api/embed", {
+      method: "POST",
+      body: JSON.stringify({
+        type: "events",
+        data: {
+          id,
+          ...newEvent,
+          image_url: imageUrls,
+          created_at,
         },
-        body: JSON.stringify({
-          type: "events",
-          data: {
-            id,
-            ...newEvent,
-            images: imageUrls,
-            created_at,
-          },
-        }),
-      });
-
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to add event");
-      }
-      
-      setUploadStatus("Event added successfully!");
-      setNewEvent({
-        title: "",
-        category: "",
-        start_date: "",
-        end_date: "",
-        venue: "",
-        city: "",
-        description: "",
-      });
-      setImageFiles([]);
-      fetchEvents();
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => setUploadStatus(null), 3000);
-    } catch (error: any) {
-      console.error("Error adding event:", error);
-      setUploadStatus(`Error: ${error.message}`);
-    }
+      }),
+    });
+    setNewEvent({
+      title: "",
+      category: "",
+      start_date: "",
+      end_date: "",
+      venue: "",
+      city: "",
+      description: "",
+    });
+    setImageFiles([]);
+    fetchEvents();
   }
 
   function handleImageChange(index: number, file: File | null) {
@@ -451,12 +377,12 @@ function EventsAdmin() {
       title="🎉 Manage Events"
       items={events}
       fields={[
-        { placeholder: "Title", key: "title", required: true },
-        { placeholder: "Category", key: "category", required: true },
-        { placeholder: "Start Date (YYYY-MM-DD)", key: "start_date", required: true },
+        { placeholder: "Title", key: "title" },
+        { placeholder: "Category", key: "category" },
+        { placeholder: "Start Date (YYYY-MM-DD)", key: "start_date" },
         { placeholder: "End Date (YYYY-MM-DD)", key: "end_date" },
         { placeholder: "Venue", key: "venue" },
-        { placeholder: "City", key: "city", required: true },
+        { placeholder: "City", key: "city" },
       ]}
       descriptionKey="description"
       newItem={newEvent}
@@ -466,7 +392,6 @@ function EventsAdmin() {
       handleImageChange={handleImageChange}
       addItem={addEvent}
       deleteItem={deleteEvent}
-      uploadStatus={uploadStatus}
     />
   );
 }
@@ -485,7 +410,6 @@ function Section({
   handleImageChange,
   addItem,
   deleteItem,
-  uploadStatus,
 }: any) {
   // Drag and drop handler
   function handleDrop(e: React.DragEvent<HTMLLabelElement>, index: number) {
@@ -505,17 +429,6 @@ function Section({
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
-      
-      {uploadStatus && (
-        <div className={`p-3 rounded-lg ${
-          uploadStatus.includes("Error") 
-            ? "bg-red-100 text-red-700" 
-            : "bg-green-100 text-green-700"
-        }`}>
-          {uploadStatus}
-        </div>
-      )}
-      
       <div className="bg-white border p-6 rounded-2xl shadow space-y-4">
         <div className="grid grid-cols-2 gap-4">
           {fields.map((field: any) => (
@@ -557,19 +470,15 @@ function Section({
                 </button>
               </div>
             ) : (
-              <div key={field.key} className="flex flex-col">
-                <input
-                  className="border p-2 rounded-lg text-gray-900"
-                  placeholder={field.placeholder + (field.required ? " *" : "")}
-                  value={newItem[field.key]}
-                  onChange={(e) =>
-                    setNewItem({ ...newItem, [field.key]: e.target.value })
-                  }
-                />
-                {field.required && !newItem[field.key] && (
-                  <span className="text-red-500 text-xs mt-1">This field is required</span>
-                )}
-              </div>
+              <input
+                key={field.key}
+                className="border p-2 rounded-lg text-gray-900"
+                placeholder={field.placeholder}
+                value={newItem[field.key]}
+                onChange={(e) =>
+                  setNewItem({ ...newItem, [field.key]: e.target.value })
+                }
+              />
             )
           ))}
           {selectField && (
@@ -581,7 +490,7 @@ function Section({
               }
             >
               {selectField.options.map((opt: string) => (
-                <option key={opt} value={opt}>{opt}</option>
+                <option key={opt}>{opt}</option>
               ))}
             </select>
           )}
@@ -590,7 +499,6 @@ function Section({
           <textarea
             className="border p-2 w-full rounded-lg text-gray-900"
             placeholder="Description"
-            rows={4}
             value={newItem[descriptionKey]}
             onChange={(e) =>
               setNewItem({ ...newItem, [descriptionKey]: e.target.value })
@@ -650,38 +558,34 @@ function Section({
           </div>
         </div>
         <button
-          className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
           onClick={addItem}
-          disabled={fields.some((field: any) => field.required && !newItem[field.key])}
         >
           ➕ Add
         </button>
       </div>
 
-      <div className="bg-white border p-6 rounded-2xl shadow">
-        <h3 className="text-xl font-semibold mb-4">Existing Items</h3>
-        <ul className="divide-y divide-gray-200">
-          {items.map((item: any) => (
-            <li
-              key={item.id}
-              className="flex justify-between items-center py-3 px-2 hover:bg-gray-50 rounded-lg"
-            >
-              <span className="text-gray-900 font-semibold">
-                {item.name || item.title}{" "}
-                <span className="text-gray-600 font-medium">
-                  ({item.city || item.start_date || ""})
-                </span>
+      <ul className="divide-y divide-gray-200">
+        {items.map((item: any) => (
+          <li
+            key={item.id}
+            className="flex justify-between items-center py-3 px-2 hover:bg-gray-50 rounded-lg"
+          >
+            <span className="text-gray-900 font-semibold">
+              {item.name || item.title}{" "}
+              <span className="text-gray-600 font-medium">
+                ({item.city || item.start_date || ""})
               </span>
-              <button
-                className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                onClick={() => deleteItem(item.id)}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+            </span>
+            <button
+              className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+              onClick={() => deleteItem(item.id)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

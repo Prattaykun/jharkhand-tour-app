@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WB 3D Tour",
-  description: "Experience cultural and heritage tours in 3D",
+  title: "Jharkhand Tour",
+  description: "Experience cultural and heritage tours in Jharkhand",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
