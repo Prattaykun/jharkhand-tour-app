@@ -33,9 +33,9 @@ export default function Home() {
   const router = useRouter();
 
   const heroImages = [
-    "/media/icons/1.jpg",
-    "/media/icons/jharkhand-new.jpg",
-    "/media/icons/2.jpeg",
+    "/media/photo-1619500765355-8ba767d6e261.jpeg",
+    "/media/ 2.avif",
+    "/media/ET77GGKVAAEZJxu.jpeg",
   ];
 
   useEffect(() => {
