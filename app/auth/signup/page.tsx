@@ -65,7 +65,7 @@ export default function SignupPage() {
           <div className="text-center mb-8">
             <div className="w-16 h-16 mx-auto rounded-2xl overflow-hidden shadow-lg">
               <img
-                src="/media/flight.png"
+                src="/media/bus-tour.png"
                 alt="App Logo"
                 className="w-full h-full object-cover"
               />

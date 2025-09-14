@@ -42,7 +42,7 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <div className="w-16 h-16 mx-auto rounded-2xl overflow-hidden shadow-lg">
               <img
-                src="/media/flight.png" // <-- replace with your logo path
+                src="/media/bus-tour.png" // <-- replace with your logo path
                 alt="App Logo"
                 className="w-full h-full object-cover"
               />

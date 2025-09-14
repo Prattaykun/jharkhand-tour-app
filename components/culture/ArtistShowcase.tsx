@@ -10,7 +10,7 @@ export default function ArtistShowcase() {
       achievement: "Padma Shri Recipient",
       icon: Music,
       image:
-        "https://upload.wikimedia.org/wikipedia/commons/2/27/Ram_Dayal_Munda.jpg",
+        "/media/540524_1483005971.jpg",
       description:
         "Renowned tribal scholar and musician who promoted Santhali language and folk music.",
     },
@@ -20,7 +20,7 @@ export default function ArtistShowcase() {
       achievement: "Preserving Tribal Traditions",
       icon: Theater,
       image:
-        "https://upload.wikimedia.org/wikipedia/commons/f/f2/Santhali_dance.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a5/Bihar_Folk_Dance_Jhumar.jpg",
       description:
         "Folk dancers from Munda, Santhal, and Oraon communities showcasing traditional tribal dances like Chhau and Paika.",
     },
@@ -30,7 +30,7 @@ export default function ArtistShowcase() {
       achievement: "Award-winning Tribal Artist",
       icon: Palette,
       image:
-        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Jharkhand_folk_art.jpg",
+        "/media/icons/toilet.png",
       description:
         "Folk and mural artist known for depicting Jharkhand’s tribal life and cultural motifs.",
     },
@@ -40,7 +40,7 @@ export default function ArtistShowcase() {
       achievement: "Sangeet Natak Akademi Recognition",
       icon: Music,
       image:
-        "https://upload.wikimedia.org/wikipedia/commons/1/18/Indian_classical_musician.jpg",
+        "/media/DrRajendraPrasadSingh.jpg",
       description:
         "Classical musician from Jharkhand integrating local folk melodies into classical compositions.",
     },

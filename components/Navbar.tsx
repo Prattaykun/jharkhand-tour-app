@@ -26,7 +26,7 @@ export default function Navbar() {
       {/* Logo - click to scroll to top */}
   <button onClick={() => router.push("/")} className="flex items-center gap-4 focus:outline-none">
         <div className="w-14 h-14 bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-2xl ring-1 ring-white/30 overflow-hidden">
-          <img src="/media/flight.png" alt="WB Tour Logo" className="w-full h-full object-cover" />
+          <img src="/media/bus-tour.png" alt="WB Tour Logo" className="w-full h-full object-cover" />
         </div>
         <div>
           <h1 className="text-3xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
