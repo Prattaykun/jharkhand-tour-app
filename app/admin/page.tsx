@@ -229,7 +229,7 @@ function HotelsAdmin() {
     lon: "",
     city: "",
     rating: "",
-    priceBand: "Budget",
+    price_band: "Budget",
     google_map_link: "",
   });
   const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
@@ -264,7 +264,7 @@ function HotelsAdmin() {
       lon: "",
       city: "",
       rating: "",
-      priceBand: "Budget",
+      price_band: "Budget",
       google_map_link: "",
     });
     setImageFiles([]);
@@ -295,7 +295,7 @@ function HotelsAdmin() {
         { placeholder: "Google Map Link", key: "google_map_link" },
       ]}
       selectField={{
-        key: "priceBand",
+        key: "price_band",
         options: ["Budget", "Mid", "Premium"],
       }}
       newItem={newHotel}
