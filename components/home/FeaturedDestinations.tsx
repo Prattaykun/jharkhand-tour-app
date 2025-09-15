@@ -8,67 +8,69 @@ export default function FeaturedDestinations() {
   const destinations = [
     {
       id: 1,
-      name: "Victoria Memorial",
-      location: "Kolkata",
+      name: "Dassam Falls",
+      location: "Ranchi",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80",
+        "https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?w=600&q=80",
       description:
-        "Iconic white marble monument dedicated to Queen Victoria",
+        "A stunning waterfall located near Ranchi, known for its natural beauty and peaceful surroundings.",
       duration: "2-3 hours",
-      rating: 4.8,
-      category: "Historical Monument",
+      rating: 4.7,
+      category: "Nature & Waterfalls",
     },
     {
       id: 2,
-      name: "Howrah Bridge",
-      location: "Kolkata",
+      name: "Baidhyanath Jyotirlinga Temple",
+      location: "Deoghar",
       image:
-        "https://images.unsplash.com/photo-1555400082-4b3b94d6d721?w=600&q=80",
-      description: "Famous cantilever bridge over the Hooghly River",
-      duration: "1 hour",
-      rating: 4.6,
-      category: "Architecture",
-    },
-    {
-      id: 3,
-      name: "Dakshineswar Temple",
-      location: "Kolkata",
-      image:
-        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80",
-      description: "Sacred Hindu temple dedicated to Goddess Kali",
+        "https://images.unsplash.com/photo-1603421976780-5e5e76a2e8e6?w=600&q=80",
+      description:
+        "One of the twelve Jyotirlingas in India, this temple is an important pilgrimage site for Hindus.",
       duration: "2 hours",
-      rating: 4.7,
+      rating: 4.9,
       category: "Religious Site",
     },
     {
-      id: 4,
-      name: "Darjeeling Tea Gardens",
-      location: "Darjeeling",
+      id: 3,
+      name: "Netarhat Hills",
+      location: "Latehar",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80",
-      description: "Scenic hill station famous for tea plantations",
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80",
+      description:
+        "Often called the 'Queen of Chotanagpur', Netarhat offers breathtaking sunrise and sunset views.",
       duration: "Full Day",
-      rating: 4.9,
-      category: "Nature & Tea",
+      rating: 4.8,
+      category: "Hill Station",
+    },
+    {
+      id: 4,
+      name: "Patratu Valley",
+      location: "Ramgarh",
+      image:
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80",
+      description:
+        "Famous for its scenic drive, lush greenery, and serene dam views, making it a favorite among travelers.",
+      duration: "Half Day",
+      rating: 4.6,
+      category: "Scenic Valley",
     },
   ];
 
   return (
-   <section className="relative py-32 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 overflow-hidden">
-  {/* Decorative subtle circles */}
-  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-400 rounded-full opacity-10 blur-3xl"></div>
-  <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gray-500 rounded-full opacity-10 blur-3xl"></div>
+    <section className="relative py-32 bg-gradient-to-b from-gray-100 via-gray-200 to-gray-300 overflow-hidden">
+      {/* Decorative subtle circles */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-400 rounded-full opacity-10 blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gray-500 rounded-full opacity-10 blur-3xl"></div>
 
-  <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-    {/* Your content goes here */}
+      <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
-            Featured <span className="text-indigo-700">Destinations</span>
+            Featured <span className="text-green-700">Destinations</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Explore the most iconic and culturally significant places that
-            define West Bengal&apos;s rich heritage.
+            Discover the natural wonders, cultural heritage, and serene beauty
+            that make Jharkhand a unique travel destination.
           </p>
         </div>
 
@@ -91,19 +93,20 @@ export default function FeaturedDestinations() {
                   <div>
                     {/* Category + Rating */}
                     <div className="flex justify-between items-start mb-3">
-                      <span className="bg-orange-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                         {destination.category}
                       </span>
-                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center border">
-                        <Star className="w-4 h-4 text-yellow-500 fill-current mr-1" />
-                        <span className="text-sm font-semibold">
-                          {destination.rating}
-                        </span>
-                      </div>
+                     <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center border">
+  <Star className="w-4 h-4 text-yellow-500 fill-current mr-1" />
+  <span className="text-sm font-semibold text-black">
+    {destination.rating}
+  </span>
+</div>
+
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">
                       {destination.name}
                     </h3>
 
@@ -127,7 +130,7 @@ export default function FeaturedDestinations() {
 
                     <Link
                       href="/Heritage"
-                      className="text-indigo-600 hover:text-purple-600 font-semibold flex items-center group-hover:gap-2 transition-all"
+                      className="text-green-700 hover:text-emerald-600 font-semibold flex items-center group-hover:gap-2 transition-all"
                     >
                       Learn More
                       <ArrowRight className="w-4 h-4 ml-1" />
@@ -143,7 +146,7 @@ export default function FeaturedDestinations() {
         <div className="text-center mt-16">
           <Link
             href="/map"
-            className="inline-flex items-center bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-600 transition-all transform hover:scale-105 shadow-lg"
+            className="inline-flex items-center bg-green-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-emerald-600 transition-all transform hover:scale-105 shadow-lg"
           >
             View All Destinations
             <ArrowRight className="w-5 h-5 ml-2" />
