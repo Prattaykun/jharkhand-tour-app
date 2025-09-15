@@ -78,8 +78,8 @@ export default function Culture() {
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-blue-50 to-indigo-50">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-blue-900/90" />
-       <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 to-yellow-900/ to-red-900/90" />
+       <div className="absolute inset-0 opacity-70">
   <Image
     src="https://images.unsplash.com/photo-1669040186491-49551a47bdb1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     alt="Jharkhand Culture"

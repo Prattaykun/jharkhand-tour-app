@@ -146,7 +146,7 @@ const filtered = useMemo(() => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
           <div>
             <h1 className="text-4xl font-extrabold text-slate-800">
-              Explore West Bengal
+              Explore Jharkhand 
             </h1>
             <p className="mt-2 text-slate-600 text-lg">
               Discover festivals, concerts, exhibitions, and more across the state
