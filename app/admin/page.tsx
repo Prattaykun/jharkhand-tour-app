@@ -98,17 +98,30 @@ export default function AdminPage() {
           >
             Events
           </Tabs.Trigger>
-        </Tabs.List>
+          <Tabs.Trigger
+  value="heritage"
+  className="px-6 py-3 font-semibold text-gray-600 rounded-t-xl transition
+             hover:text-indigo-600 hover:bg-yellow-50
+             data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500
+             data-[state=active]:text-white data-[state=active]:shadow-md"
+>
+  Heritage
+</Tabs.Trigger>
 
-        <Tabs.Content value="places">
-          <PlacesAdmin />
-        </Tabs.Content>
-        <Tabs.Content value="hotels">
-          <HotelsAdmin />
-        </Tabs.Content>
-        <Tabs.Content value="events">
-          <EventsAdmin />
-        </Tabs.Content>
+        </Tabs.List>
+<Tabs.Content value="places">
+  <PlacesAdmin />
+</Tabs.Content>
+<Tabs.Content value="hotels">
+  <HotelsAdmin />
+</Tabs.Content>
+<Tabs.Content value="events">
+  <EventsAdmin />
+</Tabs.Content>
+<Tabs.Content value="heritage">
+  <HeritageAdmin />
+</Tabs.Content>
+
       </Tabs.Root>
     </div>
   );
@@ -414,6 +427,84 @@ function EventsAdmin() {
     />
   );
 }
+/* ---------- Heritage Sites ---------- */
+function HeritageAdmin() {
+  const [heritage, setHeritage] = useState<any[]>([]);
+  const [newHeritage, setNewHeritage] = useState({
+    name: "",
+    location: "",
+    significance: "",
+    description: "",
+  });
+  const [imageFiles, setImageFiles] = useState<(File | null)[]>([]);
+
+  useEffect(() => {
+    fetchHeritage();
+  }, []);
+
+  async function fetchHeritage() {
+    const { data } = await supabase.from("heritage_sites").select("*");
+    if (data) setHeritage(data);
+  }
+
+  async function addHeritage() {
+    const imageUrls = await uploadImages(imageFiles);
+
+   await fetch("/api/embed", {
+  method: "POST",
+  body: JSON.stringify({
+    type: "heritage_sites",
+    data: {
+      ...newHeritage,
+      image_url: imageFiles[0] ? await uploadToCloudinary(imageFiles[0]) : null,
+    },
+  }),
+});
+
+
+    setNewHeritage({
+      name: "",
+      location: "",
+      significance: "",
+      description: "",
+    });
+    setImageFiles([]);
+    fetchHeritage();
+  }
+
+  function handleImageChange(index: number, file: File | null) {
+    const updated = [...imageFiles];
+    updated[index] = file;
+    setImageFiles(updated);
+  }
+
+  async function deleteHeritage(id: string) {
+    await supabase.from("heritage_sites").delete().eq("id", id);
+    fetchHeritage();
+  }
+
+  return (
+    <Section
+      title="🏛 Manage Heritage Sites"
+      items={heritage}
+      fields={[
+        { placeholder: "Name", key: "name" },
+        { placeholder: "Location", key: "location" },
+        { placeholder: "Significance", key: "significance" },
+        { placeholder: "Entry Fee (INR or Free)", key: "entry_fee" }, // ✅ added entry_fee
+      ]}
+      descriptionKey="description"
+      newItem={newHeritage}
+      setNewItem={setNewHeritage}
+      imageFiles={imageFiles}
+      setImageFiles={setImageFiles}
+      handleImageChange={handleImageChange} // ✅ pass correct handler
+      addItem={addHeritage}
+      deleteItem={deleteHeritage}
+    />
+  );
+}
+
 
 /* ---------- Reusable Section Component ---------- */
 function Section({

@@ -13,6 +13,7 @@ import BottomNav from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import Menu from "@/components/Menu";
 import Chatbot from "@/components/Chatbot";
+import { motion } from "framer-motion";
 
 // Define the SearchResult interface for the home page
 interface SearchResult {
@@ -86,10 +87,31 @@ export default function Home() {
       <HeroSection heroImages={heroImages} currentImageIndex={currentImageIndex} />
 
       <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-20">
+            {/* Scroll Mouse Icon */}
+<div className="absolute bottom-130 left-1/2 transform -translate-x-1/2 z-20">
+
+  <motion.div
+    animate={{ y: [0, 20, 0] }}
+    transition={{ repeat: Infinity, duration: 2 }}
+    className="flex flex-col items-center text-white opacity-80 hover:opacity-100 cursor-pointer"
+  >
+    {/* Modern Mouse Shape */}
+    <div className="w-10 h-16 border-4 border-white rounded-full flex items-start justify-center p-3 shadow-lg">
+      {/* Animated Scroll Wheel */}
+      <motion.div
+        animate={{ y: [0, 12, 0] }}
+        transition={{ repeat: Infinity, duration: 1.8 }}
+        className="w-2 h-3 bg-white rounded-full"
+      />
+    </div>
+    <span className="mt-3 text-sm uppercase  tracking-widest">Scroll</span>
+  </motion.div>
+</div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900 mb-8 drop-shadow-sm">
             Find Your Perfect Experience
           </h2>
+          
 
           <Search 
             placeholder="🔍Discover places, hotels, events and more..."
@@ -121,6 +143,7 @@ export default function Home() {
 
       <FeaturedDestinations />
       <CulturalHighlights />
+      
 
      <section className="py-20 bg-gradient-to-r from-green-100 to-emerald-200 relative overflow-hidden">
   {/* Subtle tribal pattern overlay */}
