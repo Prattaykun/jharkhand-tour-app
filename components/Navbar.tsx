@@ -101,7 +101,7 @@ export default function Navbar() {
   <Button
     className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white
                hover:from-indigo-600 hover:via-purple-600 hover:to-cyan-600"
-    onClick={() => router.push("/login")}
+    onClick={() => router.push("/auth/login")}
   >
     Login <LogIn className="w-4 h-4 ml-2" />
   </Button>
