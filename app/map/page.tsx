@@ -4,14 +4,11 @@ import maplibregl, { Map, Marker, Popup, LngLatBounds } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import { PlaceCategory } from '../../shared/types';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/utils/supabase/server';
 import { useMemo } from 'react';
 import ArtifactsNearby from '@/components/Artifacts/ArtifactsNearby';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 
 const MAP_STYLE = `https://api.maptiler.com/maps/${process.env.NEXT_PUBLIC_MAPTILER_STYLE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`;
 const JHARKHAND_BOUNDS: [number, number, number, number] = [

@@ -2,16 +2,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { createClient } from "@supabase/supabase-js";
 import { Input } from "@/components/ui/input";
 import TravelProductCard from "@/components/travel/TravelProductCard2";
 import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from "@/utils/supabase/server";
 
 const PAGE_SIZE = 12;
 

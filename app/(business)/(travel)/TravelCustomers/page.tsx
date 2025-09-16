@@ -4,14 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User, Mail, Phone, Package, Calendar, DollarSign, Hash } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
-
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
+import { supabase } from "@/utils/supabase/server";
 type TravelProduct = {
   product_id: string;
   package_name: string;

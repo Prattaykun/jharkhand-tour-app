@@ -5,12 +5,7 @@ import { Menu, X, ArrowRight, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { smoothScrollTo } from "../lib/scroll";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import {supabase} from "@/utils/supabase/server";
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();

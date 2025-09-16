@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from '@/utils/supabase/server';
 import Link from 'next/link';
 
 interface Artifact {
@@ -20,10 +20,7 @@ interface Product {
   images: string[];
 }
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 
 export default function ArtifactProductList() {
   const [user, setUser] = useState<any>(null);

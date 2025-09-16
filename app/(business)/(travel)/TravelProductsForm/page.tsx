@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/utils/supabase/server";
 
 // ========================= Helper Types =========================
 type FileWithPreview = File & { preview?: string };
@@ -33,10 +33,7 @@ type CategoryPlanForm = {
 type TravelProductsForm = { packageName: string; categories: CategoryPlanForm[] };
 
 // ========================= Supabase Client =========================
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+
 
 // ========================= Utility factories =========================
 const emptyFoodItem = (): FoodItemForm => ({ name: "", images: [] });

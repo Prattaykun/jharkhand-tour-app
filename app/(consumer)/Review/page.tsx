@@ -1,10 +1,9 @@
 // app/reviews/page.tsx
 'use client';
 import ConsumerReview from '@/components/consumer/ConsumerReview';
-import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
-
+import { createClient } from '@supabase/supabase-js';
 const ReviewPage = () => {
   const [user, setUser] = useState<User | null>(null);
 

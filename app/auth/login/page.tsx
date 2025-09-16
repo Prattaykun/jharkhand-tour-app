@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { supabase } from "@/utils/supabase/server";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import {getURL} from "@/lib/getURL";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +25,8 @@ export default function LoginPage() {
     if (error) {
       alert(error.message);
     } else {
-      router.push("/");
+      redirect(getURL());
+
     }
   };
 

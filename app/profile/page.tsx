@@ -1,15 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
 import ConsumerProfile from '@/components/consumer/ConsumerProfile';
 import BusinessDashboard from '@/app/(business)/BusinessDashboard/page';
 import ConsumerReview from '@/components/consumer/ConsumerReview';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from '@/utils/supabase/server';
 
 interface Profile {
   id: string;
