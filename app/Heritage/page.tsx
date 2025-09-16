@@ -1,167 +1,140 @@
 "use client";
 
-import React, { useState } from "react";
-import { MapPin, Clock, Star, Heart } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
-import HeritageCard from "../../components/heritage/HeritageCard";
-import HeritageFilter from "../../components/heritage/HeritageFilter";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function Heritage() {
-  const [activeFilter, setActiveFilter] = useState("all");
-  const router = useRouter();
+type HeritageItem = {
+  id: string;
+  name: string;
+  location: string;
+  description: string;
+  significance?: string;
+  image_url?: string;
+  embedding?: number[];
+  entry_fee?: string; // ✅ added entry_fee
+};
 
-  const heritageSites = [
-    {
-      id: 1,
-      name: "Jagannath Temple",
-      location: "Ranchi",
-      category: "temple",
-      image:
-        "https://images.unsplash.com/photo-1601758123927-8f54f5c1b6c8?w=600&q=80",
-      description:
-        "Famous Hindu temple dedicated to Lord Jagannath, a spiritual landmark in Ranchi.",
-      established: "1691",
-      visitDuration: "1-2 hours",
-      rating: 4.7,
-      highlights: ["Main Temple", "Festivals", "Rituals", "Architecture"],
-      bestTime: "October to March",
-      entryFee: "Free",
-    },
-    {
-      id: 2,
-      name: "Betla National Park",
-      location: "Palamu",
-      category: "nature",
-      image:
-        "https://images.unsplash.com/photo-1587620931278-4c0e4f9932a7?w=600&q=80",
-      description:
-        "One of the first national parks in India, famous for wildlife and scenic beauty.",
-      established: "1974",
-      visitDuration: "3-5 hours",
-      rating: 4.8,
-      highlights: ["Wildlife Safari", "Bird Watching", "Nature Trails"],
-      bestTime: "November to February",
-      entryFee: "₹50 for Indians, ₹500 for Foreigners",
-    },
-    {
-      id: 3,
-      name: "Ranchi Hill",
-      location: "Ranchi",
-      category: "architecture",
-      image:
-        "https://images.unsplash.com/photo-1596790922303-c0c5a34f567f?w=600&q=80",
-      description:
-        "Scenic hill offering panoramic views of Ranchi city, a popular tourist spot.",
-      established: "Ancient",
-      visitDuration: "1 hour",
-      rating: 4.6,
-      highlights: ["Viewpoint", "Photography", "Sunset Spot"],
-      bestTime: "Evening",
-      entryFee: "Free",
-    },
-    {
-      id: 4,
-      name: "Tagore Hill",
-      location: "Ranchi",
-      category: "historical",
-      image:
-        "https://images.unsplash.com/photo-1566802892344-89e1b35a2de0?w=600&q=80",
-      description:
-        "Historical site associated with Nobel laureate Rabindranath Tagore's family.",
-      established: "1900s",
-      visitDuration: "1-2 hours",
-      rating: 4.7,
-      highlights: ["Historical Significance", "Scenic Views", "Picnic Spot"],
-      bestTime: "Morning or Evening",
-      entryFee: "Free",
-    },
-    {
-      id: 5,
-      name: "Jadugoda Uranium Mines",
-      location: "East Singhbhum",
-      category: "industrial",
-      image:
-        "https://images.unsplash.com/photo-1577529118254-f2f1b2c31d3d?w=600&q=80",
-      description:
-        "Famous for uranium mining, showcasing Jharkhand’s industrial heritage.",
-      established: "1967",
-      visitDuration: "1-2 hours",
-      rating: 4.5,
-      highlights: ["Mining Tours", "Industrial Visits", "Photography"],
-      bestTime: "Morning",
-      entryFee: "Restricted",
-    },
-  ];
+export default function HeritagePage() {
+  const [query, setQuery] = useState("");
+  const [heritage, setHeritage] = useState<HeritageItem[]>([]);
+  const [selected, setSelected] = useState<HeritageItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const filteredSites =
-    activeFilter === "all"
-      ? heritageSites
-      : heritageSites.filter((site) => site.category === activeFilter);
+  useEffect(() => {
+    const fetchHeritage = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("heritage_sites")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (error) console.error(error);
+      else setHeritage(data || []);
+      setLoading(false);
+    };
+    fetchHeritage();
+  }, []);
+
+  const filtered = useMemo(() => {
+    const q = query.toLowerCase();
+    return heritage.filter(
+      (h) =>
+        h.name.toLowerCase().includes(q) ||
+        h.location.toLowerCase().includes(q) ||
+        h.description.toLowerCase().includes(q)
+    );
+  }, [query, heritage]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-yellow-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            Heritage <span className="text-[#D2691E]">Sites of Jharkhand</span>
-          </h1>
-          <p className="text-lg text-gray-700 max-w-4xl mx-auto mb-8">
-            Discover Jharkhand&apos;s rich heritage, from ancient temples and scenic hills to national parks and historical landmarks.
-          </p>
+    <main className="min-h-screen bg-gray-50 py-10 px-4">
+      <section className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">Heritage Sites of Jharkhand</h1>
+        <p className="text-gray-600 mb-6">Explore cultural and historical heritage sites across the state.</p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-4 gap-6 bg-white rounded-2xl p-6 shadow-lg max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#D2691E] mb-1">30+</div>
-              <div className="text-gray-600 font-medium">Heritage Sites</div>
+        <div className="flex mb-8 gap-4 items-center">
+          <input
+            type="text"
+            placeholder="Search heritage sites..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full md:w-96 px-4 py-2 border rounded-full focus:ring-2 focus:ring-green-500 text-gray-900"
+          />
+        </div>
+
+        {loading ? (
+          <p className="text-gray-500 text-center">Loading heritage sites...</p>
+        ) : filtered.length === 0 ? (
+          <p className="text-gray-500 text-center">No heritage sites found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((h) => (
+              <div key={h.id} className="bg-white rounded-2xl shadow overflow-hidden flex flex-col">
+                <div className="h-44 w-full relative bg-gray-100">
+                  {h.image_url ? (
+                    <img src={h.image_url} alt={h.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      No image
+                    </div>
+                  )}
+                </div>
+
+               <div className="p-5 flex-1 flex flex-col">
+  <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">{h.name}</h3>
+  <p className="mt-2 text-sm text-gray-600 flex-1 line-clamp-3">{h.description}</p>
+  <div className="mt-2 text-sm text-gray-500">📍 {h.location}</div>
+  {h.significance && <div className="mt-1 text-sm text-gray-500">✨ {h.significance}</div>}
+  {h.entry_fee && <div className="mt-1 text-sm text-gray-500">💰 Entry Fee: {h.entry_fee}</div>}  {/* ✅ Added entry fee */}
+
+  <button
+    onClick={() => setSelected(h)}
+    className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
+  >
+    View Details
+  </button>
+</div>
+
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Modal */}
+      {selected && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="relative h-48 sm:h-64 w-full">
+              {selected.image_url ? (
+                <img src={selected.image_url} alt={selected.name} className="w-full h-full object-cover rounded-t-2xl" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100 rounded-t-2xl">No image</div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end p-4">
+                <h2 className="text-2xl font-bold text-white">{selected.name}</h2>
+              </div>
+
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-2 right-2 bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/90"
+              >
+                ✕
+              </button>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#D2691E] mb-1">500+</div>
-              <div className="text-gray-600 font-medium">Years of History</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#D2691E] mb-1">5</div>
-              <div className="text-gray-600 font-medium">National Parks</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#D2691E] mb-1">15+</div>
-              <div className="text-gray-600 font-medium">Architectural Styles</div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-gray-700">{selected.description}</p>
+              <p className="text-gray-600">📍 Location: {selected.location}</p>
+              {selected.significance && <p className="text-gray-600">✨ Significance: {selected.significance}</p>}
             </div>
           </div>
         </div>
-
-        {/* Filter */}
-        <HeritageFilter
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-        />
-
-        {/* Heritage Sites Grid */}
-        <div className="grid grid-cols-3 gap-8">
-          {filteredSites.map((site, index) => (
-            <HeritageCard key={site.id} site={site} index={index} />
-          ))}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16 bg-gradient-to-r from-[#FF7F50] via-[#FFB347] to-[#D2691E] rounded-3xl p-8 text-white shadow-lg">
-          <h2 className="text-3xl font-bold mb-4">
-            Plan Your Heritage Journey
-          </h2>
-          <p className="text-lg mb-6">
-            Let us help you create an unforgettable experience exploring Jharkhand&apos;s heritage.
-          </p>
-          
-          <button
-            className="bg-white text-[#D2691E] px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
-            onClick={() => router.push("/MyTourPlan")}
-          >
-            Get Personalized Itinerary
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </main>
   );
 }

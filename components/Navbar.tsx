@@ -47,6 +47,9 @@ export default function Navbar() {
         <button onClick={() => go("contact")} className={pathname === "/#contact" ? "text-indigo-400" : "hover:text-indigo-400"}>
           Contact
         </button>
+        <button onClick={() => router.push("/About")} className={pathname === "/#contact" ? "text-indigo-400" : "hover:text-indigo-400"}>
+          About
+        </button>
        <Button
   className="
     relative 
