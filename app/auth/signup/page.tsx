@@ -37,7 +37,7 @@ export default function SignupPage() {
 
     const userId = data?.user?.id;
     if (userId) {
-      await supabase.rpc("create_profiles_table_if_not_exists");
+      // await supabase.rpc("create_profiles_table_if_not_exists");
      await supabase.from("profiles").insert({
       id: userId,
        full_name,
