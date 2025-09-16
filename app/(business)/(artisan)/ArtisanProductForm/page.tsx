@@ -249,6 +249,7 @@ const handleSkipImageUpload = async () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('form submit started') ;
     if (!inputValue.trim() || isLoading) return;
 
     setIsLoading(true);
