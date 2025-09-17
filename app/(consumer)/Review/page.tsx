@@ -4,20 +4,13 @@ import ConsumerReview from '@/components/consumer/ConsumerReview';
 import { useEffect, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/utils/supabase/client';
 const ReviewPage = () => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user ?? null);
-    });
-  }, []);
+  
 
-  return <ConsumerReview user={user} />;
+  return <ConsumerReview user={user} supabase={supabase} />;
 };
 
 export default ReviewPage;
