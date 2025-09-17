@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import * as Tabs from "@radix-ui/react-tabs";
 import { uploadToCloudinary } from "../../utils/cloudinary/client";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 import { motion } from "framer-motion";
 
 // ✅ Supabase client

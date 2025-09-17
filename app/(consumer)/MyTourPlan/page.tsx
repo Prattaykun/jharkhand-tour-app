@@ -2,7 +2,7 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabase/server';
+import { supabase } from '@/utils/supabase/client';
 // Types (unchanged)
 type Category = 'Heritage' | 'Temple' | 'Museum' | 'Nature' | 'Fort' | 'Beach' | 
   'Market' | 'Park' | 'Transport' | 'Wildlife' | 'National Park' | 'Village' | 

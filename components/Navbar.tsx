@@ -3,29 +3,18 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ArrowRight, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { smoothScrollTo } from "../lib/scroll";
-import {supabase} from "@/utils/supabase/server";
+import {supabase} from "@/utils/supabase/client";
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null); // track auth state
   
-  useEffect(() => {
-    // fetch current user
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    };
-    getUser();
-
-    // subscribe to auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(() => getUser());
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, [supabase]);
+ useEffect(() => {
+   const user= supabase.auth.getUser()
+ } , []);
 
   const go = (id: string) => {
     smoothScrollTo(id);

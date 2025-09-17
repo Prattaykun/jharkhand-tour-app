@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import {supabase} from '@/utils/supabase/server';
+import {supabase} from '@/utils/supabase/client';
 
 interface Artifact {
   name: string;

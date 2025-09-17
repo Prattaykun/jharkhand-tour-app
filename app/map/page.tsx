@@ -4,7 +4,7 @@ import maplibregl, { Map, Marker, Popup, LngLatBounds } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 import { PlaceCategory } from '../../shared/types';
-import { supabase } from '@/utils/supabase/server';
+import { supabase } from '@/utils/supabase/client';
 import { useMemo } from 'react';
 import ArtifactsNearby from '@/components/Artifacts/ArtifactsNearby';
 

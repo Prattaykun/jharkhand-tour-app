@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogIn, LogOut, Map, User, Briefcase, X } from "lucide-react";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 
 type Profile = {
   id: string;
@@ -53,6 +53,7 @@ export default function MenuToggle() {
     if (profile) {
       await supabase.auth.signOut();
       setProfile(null);
+      window.location.href = "/";
     } else {
       window.location.href = "/auth/login";
     }

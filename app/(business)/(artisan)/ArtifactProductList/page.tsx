@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabase/server';
+import { supabase } from '@/utils/supabase/client';
 import Link from 'next/link';
 
 interface Product {

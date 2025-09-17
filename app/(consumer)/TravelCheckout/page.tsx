@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import TravelProductCard1 from "@/components/travel/TravelProductCard1";
 import { Card } from "@/components/ui/card";

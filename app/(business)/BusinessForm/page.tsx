@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import ClientChatForm from "./ClientChatForm"
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 
 
 type Profile = {

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 import { Mail, Phone, Briefcase, Link as LinkIcon, Pencil, Image as ImageIcon } from "lucide-react";
 
 

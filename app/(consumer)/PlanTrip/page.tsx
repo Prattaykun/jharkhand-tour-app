@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import TravelProductCard from "@/components/travel/TravelProductCard2";
 import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 
 const PAGE_SIZE = 12;
 

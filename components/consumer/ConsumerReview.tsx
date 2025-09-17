@@ -2,8 +2,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useSessionContext, useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
-
+import { SupabaseClient } from '@supabase/supabase-js';
 interface Review {
   id: string;
   user_id: string;
@@ -20,6 +19,7 @@ interface Review {
 }
 interface ConsumerReviewProps {
   user: any; // or the proper Supabase user type
+  supabase: SupabaseClient; // or the proper Supabase client type
 }
 
 interface SearchResult {
@@ -33,7 +33,8 @@ interface SearchResult {
   [key: string]: any;
 }
 
-export default function ConsumerReview({ user }: ConsumerReviewProps) { 
+export default function ConsumerReview(
+  { user, supabase }: ConsumerReviewProps) {
    const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     places: true,
@@ -58,8 +59,7 @@ const [browsePage, setBrowsePage] = useState(1);
 const browsePerPage = 12;
 const [browseLoading, setBrowseLoading] = useState(false);
 
-  const { isLoading: sessionLoading } = useSessionContext();
-  const supabase = useSupabaseClient();
+  
   const resultsPerPage = 12;
 
   // Fetch user reviews on component mount
@@ -175,17 +175,41 @@ const [browseLoading, setBrowseLoading] = useState(false);
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUserImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+ const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  setIsSubmitting(true); // optional: show spinner
+
+  try {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const json = await res.json();
+    if (json.secure_url) {
+      setUserImage(file);                   // keep local ref if you like
+      setImagePreview(json.secure_url);     // this is the hosted URL
+    } else {
+      console.error("Cloudinary upload failed", json);
+      alert("Image upload failed");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error uploading image");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   const handleSubmitReview = async () => {
     // Check if user is available
@@ -359,13 +383,13 @@ const [browseLoading, setBrowseLoading] = useState(false);
   };
 
   // Add a loading state for session
-  if (sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+  // if (sessionLoading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  //     </div>
+  //   );
+  // }
   
   // Add a check for authenticated user
  

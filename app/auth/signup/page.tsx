@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabase/server";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import {supabase} from "@/utils/supabase/client";
+
 
 export default function SignupPage() {
   const router = useRouter();

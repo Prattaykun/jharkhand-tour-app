@@ -47,7 +47,7 @@ const ConfirmEmailPage: React.FC = () => (
         <button
           className="mt-3 w-full py-2 rounded-xl bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition duration-200"
           onClick={async () => {
-            const supabase = (await import('@/utils/supabase/server')).supabase;
+            const supabase = (await import('@/utils/supabase/client')).supabase;
             // Get current user
             const {
               data: { user },

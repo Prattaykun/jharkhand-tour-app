@@ -1,7 +1,7 @@
 // app/api/search/route.ts
 import { NextResponse } from 'next/server';
 import { embeddingModel } from '@/lib/gemini';
-import { supabase } from '@/utils/supabase/server';
+import { supabase } from '@/utils/supabase/client';
 
 export async function POST(req: Request) {
   try {

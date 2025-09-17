@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, IndianRupee, Clock, MapPin, Utensils, X } from "lucide-react";

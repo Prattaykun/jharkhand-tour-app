@@ -46,7 +46,7 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/About') &&
     !request.nextUrl.pathname.startsWith('/MyTourPlan') &&
     !request.nextUrl.pathname.startsWith('/Culture') &&
-    !request.nextUrl.pathname.startsWith('/Events') &&
+    !request.nextUrl.pathname.startsWith('/events') &&
     !request.nextUrl.pathname.startsWith('/Heritage') &&
     !request.nextUrl.pathname.startsWith('/map') &&
     !request.nextUrl.pathname.startsWith('/unauthorized') &&

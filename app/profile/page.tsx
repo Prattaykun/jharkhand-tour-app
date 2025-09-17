@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation';
 import ConsumerProfile from '@/components/consumer/ConsumerProfile';
 import BusinessDashboard from '@/app/(business)/BusinessDashboard/page';
 import ConsumerReview from '@/components/consumer/ConsumerReview';
-import { supabase } from '@/utils/supabase/server';
-
+import { supabase } from '@/utils/supabase/client';
 interface Profile {
   id: string;
   full_name: string;
@@ -165,8 +164,8 @@ export default function UserProfilePage() {
           {/* Consumer Review for all logged in users */}
           <div className="bg-white rounded-2xl p-6 shadow-lg border border-purple-100">
             <h3 className="text-xl font-bold text-purple-700 mb-4">Your Reviews</h3>
-            
-            <ConsumerReview user={user} />
+
+            <ConsumerReview user={user} supabase={supabase} />
 
           </div>
         </div>

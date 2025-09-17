@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User, Mail, Phone, Package, Calendar, DollarSign, Hash } from "lucide-react";
-import { supabase } from "@/utils/supabase/server";
+import { supabase } from "@/utils/supabase/client";
 type TravelProduct = {
   product_id: string;
   package_name: string;
