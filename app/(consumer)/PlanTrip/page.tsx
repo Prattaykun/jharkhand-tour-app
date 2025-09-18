@@ -2,11 +2,16 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { createClient } from "@supabase/supabase-js";
 import { Input } from "@/components/ui/input";
 import TravelProductCard from "@/components/travel/TravelProductCard2";
 import { motion, AnimatePresence } from "framer-motion";
 import debounce from "lodash.debounce";
-import { supabase } from "@/utils/supabase/client";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 const PAGE_SIZE = 12;
 
@@ -97,31 +102,38 @@ const response = await fetch("/api/travel-search", {
   }, [page]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
-
-  return (
-    <div className="p-6 max-w-7xl mx-auto">
+return (
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-start justify-center py-16 px-4">
+    <div className="w-full max-w-7xl bg-white bg-opacity-90 shadow-xl rounded-3xl p-10">
       {/* Search Bar */}
-      <div className="relative mb-8 max-w-2xl mx-auto">
-        <Input
-          type="text"
-          placeholder=" Search travel packages..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 pr-4 py-2 rounded-xl border focus:ring-2 focus:ring-primary/60 shadow-md"
-        />
-        <span className="absolute left-3 top-2.5 text-muted-foreground">🔍</span>
-      </div>
+<div className="relative mb-12 max-w-3xl mx-auto">
+  <Input
+    type="text"
+    placeholder="Search travel packages..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="w-full pl-14 pr-5 py-3 rounded-2xl border border-gray-300
+               text-black placeholder-black bg-white
+               focus:outline-none focus:ring-4 focus:ring-amber-400 focus:ring-opacity-50
+               focus:border-amber-400 shadow-md hover:shadow-lg
+               transition-all duration-300"
+  />
+  <span className="absolute left-5 top-3.5 text-black pointer-events-none text-xl select-none">
+    🔍
+  </span>
+</div>
+
 
       {/* Results */}
       {loading ? (
-        <div className="flex justify-center items-center h-[60vh] text-lg text-muted-foreground animate-pulse">
+        <div className="flex justify-center items-center h-[60vh] text-xl text-gray-500 animate-pulse font-semibold">
           Loading travel packages...
         </div>
       ) : products.length > 0 ? (
         <>
           <motion.div
             layout
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           >
             <AnimatePresence>
               {products
@@ -133,10 +145,10 @@ const response = await fetch("/api/travel-search", {
                   <motion.div
                     key={product.product_id}
                     layout
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.25 }}
+                    exit={{ opacity: 0, y: 30 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
                     className="h-full"
                   >
                     <TravelProductCard productId={product.product_id} />
@@ -147,11 +159,11 @@ const response = await fetch("/api/travel-search", {
 
           {/* Pagination */}
           {!isSearching && totalPages > 1 && (
-            <div className="flex justify-center items-center gap-3 mt-10 flex-wrap">
+            <div className="flex justify-center items-center gap-4 mt-12 flex-wrap">
               <button
                 disabled={page === 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-semibold transition-colors"
               >
                 Prev
               </button>
@@ -159,10 +171,10 @@ const response = await fetch("/api/travel-search", {
                 <button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-5 py-2 rounded-lg font-semibold transition-colors ${
                     page === p
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
+                      ? "bg-primary text-white shadow-lg"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-800"
                   }`}
                 >
                   {p}
@@ -171,7 +183,7 @@ const response = await fetch("/api/travel-search", {
               <button
                 disabled={page === totalPages}
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-semibold transition-colors"
               >
                 Next
               </button>
@@ -179,10 +191,11 @@ const response = await fetch("/api/travel-search", {
           )}
         </>
       ) : (
-        <p className="text-center text-lg text-muted-foreground mt-20">
+        <p className="text-center text-xl text-gray-500 mt-28 font-light italic">
           No packages found. Try another search.
         </p>
       )}
     </div>
-  );
+  </div>
+);
 }

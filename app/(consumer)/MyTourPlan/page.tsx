@@ -2,7 +2,8 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+
 // Types (unchanged)
 type Category = 'Heritage' | 'Temple' | 'Museum' | 'Nature' | 'Fort' | 'Beach' | 
   'Market' | 'Park' | 'Transport' | 'Wildlife' | 'National Park' | 'Village' | 
@@ -54,7 +55,10 @@ interface SavedPlace {
 }
 
 // Initialize Supabase (unchanged)
-
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 const MyTourPlan = () => {
   const [user, setUser] = useState<any>(null);
@@ -199,74 +203,73 @@ const MyTourPlan = () => {
   // Build form steps dynamically based on whether user has saved places
   useEffect(() => {
     const baseSteps: FormStep[] = [
-      {
-        question: "Welcome to West Bengal Tour Planner! 🌄 Where would you like to start your journey?",
-        type: "select",
-        options: [
-          "Netaji Subhas Chandra Bose International Airport, Kolkata",
-          "Bagdogra Airport, Siliguri", 
-          "Howrah Junction Railway Station",
-          "Sealdah Railway Station",
-          "Other location (please specify)"
-        ],
-        key: "startingPoint"
-      },
-      {
-        question: "Great choice! How many days will you be exploring beautiful West Bengal?",
-        type: "number",
-        key: "days",
-        min: 1,
-        max: 30
-      },
-      {
-        question: `You've selected ${formData.days} days. How many nights will you be staying? (Typically ${Math.max(1, formData.days - 1)} nights for ${formData.days} days)`,
-        type: "number", 
-        key: "nights",
-        min: 1,
-        max: 30
-      },
-      {
-        question: "What's your total budget for this trip (in INR)?",
-        type: "slider",
-        key: "budget",
-        min: 5000,
-        max: 100000,
-        step: 5000
-      },
-      {
-        question: "What type of journey experience are you looking for?",
-        type: "button-group",
-        options: ['Relaxed', 'Adventurous', 'Cultural', 'Spiritual', 'Family', 'Solo'],
-        key: "journeyType"
-      },
-      {
-        question: "What interests you most about West Bengal? (Select all that apply)",
-        type: "multi-select",
-        options: [
-          'Heritage', 'Temple', 'Museum', 'Nature', 'Fort', 'Beach', 
-          'Market', 'Park', 'Wildlife', 'National Park', 'Village', 
-          'Town', 'Viewpoint', 'Cultural Site', 'Pilgrimage', 
-          'Archaeological', 'Hillstation', 'Lake', 'Shopping'
-        ],
-        key: "categories"
-      },
-      {
-        question: "What type of accommodation do you prefer?",
-        type: "button-group",
-        options: ['Budget', 'Mid', 'Premium', 'Luxury', 'Heritage Property'],
-        key: "hotelPreference"
-      }
-    ];
-    
-    // Add saved places question if user has saved places
-    if (savedPlaces.length > 0) {
-      baseSteps.push({
-        question: "I see you have some places saved in your tour plan. Would you like to include these in your itinerary?",
-        type: "saved-places",
-        key: "includeSavedPlaces",
-        places: savedPlaces
-      });
+       {
+      question: "Welcome to Jharkhand Tour Planner! 🌄 Where would you like to start your journey?",
+      type: "select",
+      options: [
+        "Birsa Munda Airport, Ranchi",
+        "Dhanbad Junction Railway Station", 
+        "Tatanagar Junction (Jamshedpur)",
+        "Ranchi Railway Station",
+        "Other location (please specify)"
+      ],
+      key: "startingPoint"
+    },
+    {
+      question: "Great choice! How many days will you be exploring beautiful Jharkhand?",
+      type: "number",
+      key: "days",
+      min: 1,
+      max: 30
+    },
+    {
+      question: `You've selected ${formData.days} days. How many nights will you be staying? (Typically ${Math.max(1, formData.days - 1)} nights for ${formData.days} days)`,
+      type: "number", 
+      key: "nights",
+      min: 1,
+      max: 30
+    },
+    {
+      question: "What's your total budget for this trip (in INR)?",
+      type: "slider",
+      key: "budget",
+      min: 5000,
+      max: 100000,
+      step: 5000
+    },
+    {
+      question: "What type of journey experience are you looking for?",
+      type: "button-group",
+      options: ['Relaxed', 'Adventurous', 'Cultural', 'Spiritual', 'Family', 'Solo'],
+      key: "journeyType"
+    },
+    {
+      question: "What interests you most about Jharkhand? (Select all that apply)",
+      type: "multi-select",
+      options: [
+        'Waterfalls', 'Hillstation', 'Temple', 'Heritage', 'Wildlife',
+        'National Park', 'Caves', 'Museum', 'Lake', 'Tribal Culture',
+        'Adventure', 'Fort', 'Market', 'Village', 'Town', 
+        'Archaeological', 'Viewpoint', 'Festivals'
+      ],
+      key: "categories"
+    },
+    {
+      question: "What type of accommodation do you prefer?",
+      type: "button-group",
+      options: ['Budget', 'Mid', 'Premium', 'Luxury', 'Eco-Resort', 'Heritage Property'],
+      key: "hotelPreference"
     }
+  ];
+  
+   if (savedPlaces.length > 0) {
+  baseSteps.push({
+    question: "I see you have some places saved in your Jharkhand tour plan. Would you like to include these in your itinerary?",
+    type: "saved-places",
+    key: "includeSavedPlaces",
+    places: savedPlaces
+  });
+}
     
     // Add events and additional requirements questions
     baseSteps.push(
@@ -393,7 +396,7 @@ const handleAnswer = (answer: any) => {
       ...prev,
       {
         type: 'question',
-        content: "Great! Here are the upcoming events in West Bengal. Which ones would you like to include?",
+        content: "Great! Here are the upcoming events in Jharkhand. Which ones would you like to include?",
         step: currentStep + 0.5 // Use decimal step to indicate it's a sub-step
       }
     ]);
@@ -957,7 +960,7 @@ const handleSubmit = async () => {
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-100 py-8 px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <h1 className="text-3xl font-bold">Your West Bengal Adventure Awaits!</h1>
+            <h1 className="text-3xl font-bold">Your Jharkhand Adventure Awaits!</h1>
             <p className="mt-2">Here's your personalized itinerary crafted with care</p>
           </div>
           
@@ -986,123 +989,203 @@ const handleSubmit = async () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-800">Discover Incredible West Bengal</h1>
-          <p className="text-purple-600 mt-2">Plan your perfect journey through the cultural heart of India</p>
-        </div>
+        <div className="text-center mb-12 relative">
+  {/* Decorative Gradient Background */}
+  <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-200 to-orange-400 opacity-30 blur-3xl rounded-full"></div>
 
-        {/* Tab Selection */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white rounded-xl shadow-md p-1 flex">
-            <button
-              onClick={() => setActiveTab('agency')}
-              className={`px-6 py-3 rounded-xl transition-colors ${
-                activeTab === 'agency' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-gray-700 hover:bg-blue-100'
-              }`}
-            >
-              Travel Agency
-            </button>
-            <button
-              onClick={() => setActiveTab('ai')}
-              className={`px-6 py-3 rounded-xl transition-colors ${
-                activeTab === 'ai' 
-                  ? 'bg-blue-600 text-white' 
-                  : 'text-gray-700 hover:bg-blue-100'
-              }`}
-            >
-              AI Planner
-            </button>
-          </div>
-        </div>
+  {/* Heading */}
+  <h1 className="relative text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-orange-600 to-red-700 drop-shadow-lg animate-pulse">
+    Discover Incredible Jharkhand
+  </h1>
 
-        {/* Chat Interface */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <h2 className="text-2xl font-bold">Plan with AI</h2>
-            <p>Let's create your perfect West Bengal itinerary together</p>
-          </div>
+  {/* Subtitle */}
+  <p className="relative mt-4 text-lg md:text-xl text-gray-700 font-medium tracking-wide animate-fadeIn">
+    Plan your perfect journey through the cultural heart of India
+  </p>
 
-          <div 
-            ref={chatContainerRef}
-            className="p-4 h-96 overflow-y-auto bg-gray-50"
+  {/* Decorative underline */}
+  <div className="relative mx-auto mt-6 w-32 h-1 bg-gradient-to-r from-green-600 via-yellow-500 to-red-600 rounded-full animate-bounce"></div>
+</div>
+
+
+       {/* Premium Tab Selection */}
+<div className="flex justify-center mb-14">
+  <div className="relative bg-white/60 backdrop-blur-xl border border-gray-200 rounded-3xl shadow-2xl p-2 flex w-full max-w-3xl">
+    {/* Sliding Indicator */}
+    <div
+      className={`absolute top-2 bottom-2 w-1/2 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-lg transform transition-transform duration-500 ease-in-out ${
+        activeTab === 'agency' ? 'translate-x-0' : 'translate-x-full'
+      }`}
+    ></div>
+
+    {/* Travel Agency Tab */}
+    <button
+      onClick={() => setActiveTab('agency')}
+      className={`relative flex-1 z-10 px-10 py-4 rounded-2xl font-semibold tracking-wide text-lg transition-all duration-300 ${
+        activeTab === 'agency'
+          ? 'text-white scale-105'
+          : 'text-gray-700 hover:text-blue-700 hover:scale-105'
+      }`}
+    >
+      Travel Agency
+    </button>
+
+    {/* AI Planner Tab */}
+    <button
+      onClick={() => setActiveTab('ai')}
+      className={`relative flex-1 z-10 px-10 py-4 rounded-2xl font-semibold tracking-wide text-lg transition-all duration-300 ${
+        activeTab === 'ai'
+          ? 'text-white scale-105'
+          : 'text-gray-700 hover:text-purple-700 hover:scale-105'
+      }`}
+    >
+      AI Planner
+    </button>
+  </div>
+</div>
+
+
+  {/* Chat Interface */}
+<div className="bg-gradient-to-br from-white via-gray-50 to-gray-100 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.15)] overflow-hidden max-w-6xl mx-auto border border-gray-200">
+  {/* Header */}
+  <div className="p-10 bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 text-white shadow-inner">
+    <h2 className="text-4xl font-extrabold tracking-tight drop-shadow-md">
+      Plan with AI
+    </h2>
+    <p className="mt-2 text-lg font-light opacity-95">
+      Craft your perfect Jharkhand itinerary with ease and intelligence
+    </p>
+  </div>
+
+
+  {/* Chat Messages */}
+  <div
+    ref={chatContainerRef}
+    className="p-6 h-[480px] overflow-y-auto bg-gray-50"
+  >
+    <div className="space-y-5">
+      {chatMessages.map((message, index) => (
+        <div
+          key={index}
+          className={`flex ${message.type === 'question' ? 'justify-start' : 'justify-end'}`}
+        >
+          <div
+            className={`max-w-sm lg:max-w-xl px-5 py-3 text-sm md:text-base rounded-2xl shadow-sm ${
+              message.type === 'question'
+                ? 'bg-blue-100 text-blue-900 rounded-bl-none'
+                : 'bg-green-100 text-green-900 rounded-br-none'
+            }`}
           >
-            <div className="space-y-4">
-              {chatMessages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${message.type === 'question' ? 'justify-start' : 'justify-end'}`}
-                >
-                  <div
-                    className={`max-w-xs lg:max-w-md p-3 rounded-lg ${
-                      message.type === 'question'
-                        ? 'bg-blue-100 text-blue-800 rounded-bl-none'
-                        : 'bg-green-100 text-green-800 rounded-br-none'
-                    }`}
-                  >
-                    {message.content}
-                  </div>
-                </div>
-              ))}
-              
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-blue-100 text-blue-800 p-3 rounded-lg rounded-bl-none">
-                    <div className="flex space-x-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="p-4 bg-white border-t">
-            {formSteps.length > 0 && renderInput(currentStep)}
-          </div>
-
-          {error && (
-            <div className="p-4 bg-red-100 text-red-700 border-t">
-              {error}
-            </div>
-          )}
-        </div>
-
-        {/* West Bengal Highlights */}
-        <div className="mt-8 bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <h2 className="text-2xl font-bold">Why West Bengal?</h2>
-          </div>
-          <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-blue-600 text-xl">🎭</span>
-              </div>
-              <h3 className="font-medium text-blue-800">Rich Culture</h3>
-              <p className="text-sm text-gray-600 mt-1">From Durga Puja to Poila Boishakh</p>
-            </div>
-            <div className="text-center p-4">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-green-600 text-xl">🏞️</span>
-              </div>
-              <h3 className="font-medium text-green-800">Diverse Landscapes</h3>
-              <p className="text-sm text-gray-600 mt-1">Himalayas to Sundarbans</p>
-            </div>
-            <div className="text-center p-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-purple-600 text-xl">🍴</span>
-              </div>
-              <h3 className="font-medium text-purple-800">Culinary Delights</h3>
-              <p className="text-sm text-gray-600 mt-1">From street food to royal cuisine</p>
-            </div>
+            {message.content}
           </div>
         </div>
+      ))}
+
+      {isLoading && (
+  <div className="flex justify-start">
+    <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 px-6 py-4 rounded-2xl rounded-bl-none shadow-lg max-w-xs border border-blue-200">
+      {/* Typing text */}
+      <p className="text-sm font-semibold tracking-wide mb-2 animate-typing overflow-hidden whitespace-nowrap border-r-2 border-blue-600 pr-1">
+        AI is typing...
+      </p>
+
+      {/* Advanced pulsing dots */}
+      <div className="flex space-x-2 items-center">
+        <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse-dot shadow-md"></span>
+        <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse-dot delay-200 shadow-md"></span>
+        <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse-dot delay-400 shadow-md"></span>
+      </div>
+    </div>
+  </div>
+)}
+
+<style jsx>{`
+  /* Typing effect */
+  .animate-typing {
+    animation: typing 3s steps(20, end) infinite alternate, blink 1s step-end infinite;
+    width: 0;
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 7rem } /* Adjust width for text */
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent }
+  }
+
+  /* Modern pulsing dots */
+  .animate-pulse-dot {
+    animation: pulseDot 1.5s infinite;
+  }
+
+  @keyframes pulseDot {
+    0%, 80%, 100% {
+      transform: scale(0.8);
+      opacity: 0.3;
+      box-shadow: 0 0 0px rgba(37, 99, 235, 0.3);
+    }
+    40% {
+      transform: scale(1.3);
+      opacity: 1;
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    }
+  }
+`}</style>
+
+    </div>
+  </div>
+
+  {/* Input Section */}
+  <div className="p-5 bg-white border-t border-gray-200">
+    {formSteps.length > 0 && renderInput(currentStep)}
+  </div>
+
+  {/* Error Box */}
+  {error && (
+    <div className="p-4 bg-red-100 text-red-700 border-t border-red-200 text-sm">
+      {error}
+    </div>
+  )}
+</div>
+
+{/* Jharkhand Highlights */}
+<div className="mt-10 bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl mx-auto border border-gray-100">
+  {/* Header */}
+  <div className="p-8 bg-gradient-to-r from-green-600 to-yellow-500 text-white">
+    <h2 className="text-3xl font-extrabold tracking-wide">Why Jharkhand?</h2>
+  </div>
+
+  {/* Grid */}
+  <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="text-center p-6 rounded-xl bg-gradient-to-b from-orange-50 to-white shadow-md hover:shadow-lg transition">
+      <h3 className="font-semibold text-orange-700 text-lg">Tribal Heritage</h3>
+      <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+        Experience the vibrant tribal art, unique festivals, and deep-rooted traditions of Jharkhand.
+      </p>
+    </div>
+
+    <div className="text-center p-6 rounded-xl bg-gradient-to-b from-green-50 to-white shadow-md hover:shadow-lg transition">
+      <h3 className="font-semibold text-green-700 text-lg">Scenic Landscapes</h3>
+      <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+        Discover enchanting waterfalls, lush hills, and pristine wildlife sanctuaries.
+      </p>
+    </div>
+
+    <div className="text-center p-6 rounded-xl bg-gradient-to-b from-yellow-50 to-white shadow-md hover:shadow-lg transition">
+      <h3 className="font-semibold text-yellow-700 text-lg">Unique Cuisine</h3>
+      <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+        Relish traditional flavors like handia, litti-chokha, and authentic tribal delicacies.
+      </p>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   );
 };
+
 
 export default MyTourPlan;

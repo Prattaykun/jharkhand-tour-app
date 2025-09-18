@@ -1,3 +1,5 @@
+//app/components/home/FeaturedDestinations.tsx
+
 "use client";
 
 import React from "react";

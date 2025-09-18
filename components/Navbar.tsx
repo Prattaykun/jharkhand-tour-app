@@ -56,12 +56,12 @@ export default function Navbar() {
           Culture&Events
         </button>
         <button
-          onClick={() => router.push("/Stores")}
+          onClick={() => router.push("/About")}
           className={
-            pathname === "/#Stores" ? "text-indigo-400" : "hover:text-indigo-400"
+            pathname === "/About" ? "text-indigo-400" : "hover:text-indigo-400"
           }
         >
-          Stores
+          About
         </button>
         <button
           onClick={() => go("contact")}
@@ -72,24 +72,7 @@ export default function Navbar() {
           Contact
         </button>
 
-        {/* Show Login or Logout based on user */}
-       {user ? (
-  <Button
-    className="bg-gradient-to-r from-red-500 via-rose-500 to-pink-500 text-white
-               hover:from-red-600 hover:via-rose-600 hover:to-pink-600"
-    onClick={handleLogout}
-  >
-    Logout <LogOut className="w-4 h-4 ml-2" />
-  </Button>
-) : (
-  <Button
-    className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white
-               hover:from-indigo-600 hover:via-purple-600 hover:to-cyan-600"
-    onClick={() => router.push("/auth/login")}
-  >
-    Login <LogIn className="w-4 h-4 ml-2" />
-  </Button>
-        )}
+       
 
         <Button
           className="bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white hover:from-indigo-600 hover:via-purple-600 hover:to-cyan-600"

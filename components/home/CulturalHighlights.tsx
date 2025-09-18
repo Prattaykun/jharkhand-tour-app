@@ -1,3 +1,4 @@
+//app/components/home/CulturalHighlights.tsx
 "use client";
 
 import React from "react";
