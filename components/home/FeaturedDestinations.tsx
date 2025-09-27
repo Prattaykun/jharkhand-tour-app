@@ -25,7 +25,7 @@ export default function FeaturedDestinations() {
       name: "Baidhyanath Jyotirlinga Temple",
       location: "Deoghar",
       image:
-        "https://images.unsplash.com/photo-1603421976780-5e5e76a2e8e6?w=600&q=80",
+        "/media/Baba_Baidyanath_Jyotirlinga_Temple.jpg",
       description:
         "One of the twelve Jyotirlingas in India, this temple is an important pilgrimage site for Hindus.",
       duration: "2 hours",

@@ -1,7 +1,7 @@
 //app/payment/razorpay/page.tsx
 
 import { Suspense } from "react";
-import RazorpayPage from "./RazorpayPage";
+import RazorpayPage from "@/app/test/page";
 
 export default function RazorpayWrapper() {
   return (
