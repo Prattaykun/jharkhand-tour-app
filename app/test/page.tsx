@@ -1,203 +1,136 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase/client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { useEffect, useMemo, useState } from "react";
+import {supabase} from "@/utils/supabase/client";
 
-// Blockchain node URLs (your 3 deployed nodes)
-const BLOCKCHAIN_NODES = [
-  'https://your-node-1.com/api',
-  'https://your-node-2.com/api',
-  'https://your-node-3.com/api'
-];
+type HeritageItem = {
+  id: string;
+  name: string;
+  location: string;
+  description: string;
+  significance?: string;
+  image_url?: string;
+  embedding?: number[];
+  entry_fee?: string; // ✅ added entry_fee
+};
 
-export default function RazorpayPage() {
-  const [total, setTotal] = useState<number>(0);
+export default function HeritagePage() {
+  const [query, setQuery] = useState("");
+  const [heritage, setHeritage] = useState<HeritageItem[]>([]);
+  const [selected, setSelected] = useState<HeritageItem | null>(null);
   const [loading, setLoading] = useState(true);
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-
+    const fetchHeritage = async () => {
+      setLoading(true);
       const { data, error } = await supabase
-        .from("consumer_profiles")
-        .select("booked_travels")
-        .eq("id", user.id)
-        .single();
+        .from("heritage_sites")
+        .select("*")
+        .order("name", { ascending: true });
 
-      if (!error && data?.booked_travels) {
-        const unpaidItems = data.booked_travels.filter(
-          (item: any) => !item.payment_status
-        );
-
-        setCartItems(unpaidItems);
-
-        const totalInr = unpaidItems.reduce(
-          (acc: number, item: any) => acc + (item.pricing?.inr || 0),
-          0
-        );
-
-        setTotal(totalInr);
-      }
+      if (error) console.error(error);
+      else setHeritage(data || []);
       setLoading(false);
     };
-
-    fetchCart();
+    fetchHeritage();
   }, []);
 
-  const updateConsumerProfile = async (userId: string) => {
-    const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select("full_name, email")
-      .eq("id", userId)
-      .single();
-
-    if (profileError) {
-      console.error("Error fetching profile:", profileError);
-      return;
-    }
-
-    const { error: updateError } = await supabase
-      .from("consumer_profiles")
-      .update({
-        full_name: profileData.full_name,
-        email: profileData.email
-      })
-      .eq("id", userId);
-
-    if (updateError) {
-      console.error("Error updating consumer profile:", updateError);
-    }
-  };
-
-  const sendToBlockchain = async (transactionData: any) => {
-    // Try each node until one responds
-    for (const nodeUrl of BLOCKCHAIN_NODES) {
-      try {
-        const response = await fetch(`${nodeUrl}/transaction`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(transactionData),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          return result;
-        }
-      } catch (error) {
-        console.warn(`Node ${nodeUrl} failed, trying next...`);
-        continue;
-      }
-    }
-    throw new Error('All blockchain nodes are unavailable');
-  };
-
-  const handlePayment = async () => {
-    setLoading(true);
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    // Update consumer profile with full name and email
-    await updateConsumerProfile(user.id);
-
-    // Prepare blockchain transaction data
-    const transactionData = {
-      userId: user.id,
-      fullName: user.user_metadata?.full_name || '',
-      email: user.email || '',
-      productIds: cartItems.map(item => item.product_id),
-      categories: cartItems.map(item => item.category),
-      paymentStatus: 'complete',
-      totalAmount: total,
-      timestamp: Date.now()
-    };
-
-    try {
-      // Send to blockchain network
-      const blockchainResult = await sendToBlockchain(transactionData);
-
-      if (blockchainResult.success) {
-        // Update local state immediately for better UX
-        const updatedTravels = cartItems.map((item: any) => ({
-          ...item,
-          payment_status: "complete",
-          blockchain_tx_hash: blockchainResult.transactionHash,
-          block_hash: blockchainResult.blockHash,
-          verified_at: new Date().toISOString()
-        }));
-
-        // Update Supabase (blockchain node will also update, but we do it here for immediate feedback)
-        await supabase
-          .from("consumer_profiles")
-          .update({ booked_travels: updatedTravels })
-          .eq("id", user.id);
-
-        router.push("/TravelCheckout?blockchain=verified");
-      } else {
-        throw new Error('Blockchain verification failed');
-      }
-    } catch (error) {
-      console.error('Blockchain error:', error);
-      // Fallback: Update without blockchain verification
-      const updatedTravels = cartItems.map((item: any) => ({
-        ...item,
-        payment_status: "complete",
-        blockchain_verified: false
-      }));
-
-      await supabase
-        .from("consumer_profiles")
-        .update({ booked_travels: updatedTravels })
-        .eq("id", user.id);
-
-      router.push("/TravelCheckout?blockchain=fallback");
-    }
-
-    setLoading(false);
-  };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg">Processing...</p>
-      </div>
+  const filtered = useMemo(() => {
+    const q = query.toLowerCase();
+    return heritage.filter(
+      (h) =>
+        h.name.toLowerCase().includes(q) ||
+        h.location.toLowerCase().includes(q) ||
+        h.description.toLowerCase().includes(q)
     );
-  }
+  }, [query, heritage]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
-      <Card className="p-10 max-w-md text-center shadow-2xl rounded-2xl bg-white">
-        <h1 className="text-3xl font-bold mb-6">Secure Payment</h1>
-        <p className="text-lg mb-2">Blockchain Verified Transaction</p>
-        <p className="text-sm text-gray-600 mb-4">Your payment will be recorded on our secure blockchain network</p>
-        <p className="text-lg mb-4">Amount to Pay:</p>
-        <p className="text-4xl font-extrabold text-green-600 mb-6">
-          ₹{total.toLocaleString()}
-        </p>
-        <Button
-          onClick={handlePayment}
-          disabled={loading}
-          className="w-full py-3 text-lg bg-indigo-600 hover:bg-indigo-700 shadow-lg rounded-xl transition-all duration-300"
-        >
-          {loading ? "Processing..." : "Pay Securely with Blockchain"}
-        </Button>
-        <p className="text-xs text-gray-500 mt-4">
-          Verified by 3-node blockchain network
-        </p>
-      </Card>
-    </div>
+    <main className="min-h-screen bg-gray-50 py-10 px-4">
+      <section className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">Heritage Sites of Jharkhand</h1>
+        <p className="text-gray-600 mb-6">Explore cultural and historical heritage sites across the state.</p>
+
+        <div className="flex mb-8 gap-4 items-center">
+          <input
+            type="text"
+            placeholder="Search heritage sites..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full md:w-96 px-4 py-2 border rounded-full focus:ring-2 focus:ring-green-500 text-gray-900"
+          />
+        </div>
+
+        {loading ? (
+          <p className="text-gray-500 text-center">Loading heritage sites...</p>
+        ) : filtered.length === 0 ? (
+          <p className="text-gray-500 text-center">No heritage sites found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((h) => (
+              <div key={h.id} className="bg-white rounded-2xl shadow overflow-hidden flex flex-col">
+                <div className="h-44 w-full relative bg-gray-100">
+                  {h.image_url ? (
+                    <img src={h.image_url} alt={h.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      No image
+                    </div>
+                  )}
+                </div>
+
+               <div className="p-5 flex-1 flex flex-col">
+  <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">{h.name}</h3>
+  <p className="mt-2 text-sm text-gray-600 flex-1 line-clamp-3">{h.description}</p>
+  <div className="mt-2 text-sm text-gray-500">📍 {h.location}</div>
+  {h.significance && <div className="mt-1 text-sm text-gray-500">✨ {h.significance}</div>}
+  {h.entry_fee && <div className="mt-1 text-sm text-gray-500">💰 Entry Fee: {h.entry_fee}</div>}  {/* ✅ Added entry fee */}
+
+  <button
+    onClick={() => setSelected(h)}
+    className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
+  >
+    View Details
+  </button>
+</div>
+
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Modal */}
+      {selected && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="relative h-48 sm:h-64 w-full">
+              {selected.image_url ? (
+                <img src={selected.image_url} alt={selected.name} className="w-full h-full object-cover rounded-t-2xl" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100 rounded-t-2xl">No image</div>
+              )}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end p-4">
+                <h2 className="text-2xl font-bold text-white">{selected.name}</h2>
+              </div>
+
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-2 right-2 bg-black/70 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/90"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-gray-700">{selected.description}</p>
+              <p className="text-gray-600">📍 Location: {selected.location}</p>
+              {selected.significance && <p className="text-gray-600">✨ Significance: {selected.significance}</p>}
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
