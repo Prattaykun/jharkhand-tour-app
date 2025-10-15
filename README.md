@@ -11,7 +11,7 @@ The application is built with a modern stack, including Next.js, Supabase for th
 - **AI-Powered Tour Planning**: Generate personalized tour itineraries based on interests, budget, and duration using Gemini AI.
 - **Interactive Map Exploration**: Discover heritage sites, temples, waterfalls, artisan shops, and hotels on an interactive map powered by MapLibre GL.
 - **Comprehensive Search**: A unified search bar with semantic capabilities to find places, hotels, events, and artisan products.
-- **Booking and Checkout**: Book travel packages and manage your cart. The app supports payments via Razorpay.
+- **Booking and Checkout**: Book travel packages and manage your cart.Payments are just demos as it's a prototype and will not be approved in the scrutiny check of Razorpay.
 - **User Profiles**: Manage personal information, view booked trips, and save favorite places to visit.
 - **Reviews**: Share feedback and ratings on visited places, hotels, and events.
 
